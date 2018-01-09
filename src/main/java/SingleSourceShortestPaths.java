@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-package org.apache.flink.graph.examples;
-
 import org.apache.flink.api.common.ProgramDescription;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.DataSet;
@@ -25,7 +23,7 @@ import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.graph.Edge;
 import org.apache.flink.graph.Graph;
 import org.apache.flink.graph.Vertex;
-//import org.apache.flink.graph.examples.data.SingleSourceShortestPathsData;
+import org.apache.flink.graph.library.GSASingleSourceShortestPaths;
 import org.apache.flink.graph.spargel.GatherFunction;
 import org.apache.flink.graph.spargel.MessageIterator;
 import org.apache.flink.graph.spargel.ScatterFunction;
@@ -55,11 +53,6 @@ public class SingleSourceShortestPaths implements ProgramDescription {
         }
 
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
-
-        String inputPath = "/tmp/eif/txt";
-        String outputPath = "tmp/eif/output";
-
-        env.readTextFile(inputPath);
 
         DataSet<Edge<Long, Double>> edges = getEdgesDataSet(env);
 
@@ -195,9 +188,9 @@ public class SingleSourceShortestPaths implements ProgramDescription {
                     .fieldDelimiter("\t")
                     .types(Long.class, Long.class, Double.class)
                     .map(new Tuple3ToEdgeMap<>());
-        } //else {
-       //     return SingleSourceShortestPathsData.getDefaultEdgeDataSet(env);
-      // }
+        } else {
+            return null;
+       }
     }
 
     @Override
